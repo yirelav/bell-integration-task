@@ -11,6 +11,9 @@ import ru.yirelav.bellintegrationtask.config.PostgresTestContainersInitializer;
 import ru.yirelav.bellintegrationtask.repository.ArticleRepository;
 import ru.yirelav.bellintegrationtask.service.EntityCreator;
 
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -20,6 +23,11 @@ import ru.yirelav.bellintegrationtask.service.EntityCreator;
         }
 )
 public abstract class BaseApiTest {
+    static {
+        // Postgres JDBC driver uses JUL;
+        // disable it to avoid annoying, irrelevant, stderr logs during connection testing
+        LogManager.getLogManager().getLogger("").setLevel(Level.OFF);
+    }
 
     @Autowired
     protected MockMvc mockMvc;

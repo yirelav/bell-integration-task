@@ -1,7 +1,7 @@
 package ru.yirelav.bellintegrationtask.controller;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -11,25 +11,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yirelav.bellintegrationtask.converter.ArticleConverter;
 import ru.yirelav.bellintegrationtask.domain.Article;
 import ru.yirelav.bellintegrationtask.dto.ArticleDto;
 import ru.yirelav.bellintegrationtask.dto.CreateArticleDto;
+import ru.yirelav.bellintegrationtask.dto.IArticlePeriodicalStatisticRecord;
 import ru.yirelav.bellintegrationtask.dto.PageDto;
 import ru.yirelav.bellintegrationtask.service.ArticleService;
+import ru.yirelav.bellintegrationtask.service.ArticleStatisticService;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/articles")
+@AllArgsConstructor
 @Validated
 public class ArticleController {
 
-    @Autowired
-    ArticleConverter converter;
-
-    @Autowired
-    private ArticleService articleService;
+    private final ArticleConverter converter;
+    private final ArticleService articleService;
+    private final ArticleStatisticService statisticService;
 
     @GetMapping
     public PageDto<ArticleDto> getArticles(@PageableDefault Pageable pageable) {
@@ -42,4 +48,18 @@ public class ArticleController {
         Article article = articleService.createArticle(createArticleDto);
         return converter.toArticleDto(article);
     }
+
+    @GetMapping("/stats")
+    public Collection<IArticlePeriodicalStatisticRecord> getCount(
+            @RequestParam(required = false) Instant startDate,
+            @RequestParam(required = false) Instant endDate
+    ) {
+        if (startDate == null && endDate == null) {
+            Instant now = Instant.now();
+            startDate = now.minus(7, ChronoUnit.DAYS);
+            endDate = now;
+        }
+        return statisticService.daily(startDate, endDate);
+    }
+
 }

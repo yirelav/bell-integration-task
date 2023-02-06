@@ -39,7 +39,7 @@ public class Article {
     @Column(name = "content", nullable = false)
     String content;
 
-    @Column(name = "dateOfPublished", nullable = false)
+    @Column(name = "date_of_published", nullable = false)
     Instant dateOfPublished;
 
     public Instant getDateOfPublished() {

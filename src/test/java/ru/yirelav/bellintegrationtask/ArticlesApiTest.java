@@ -65,4 +65,16 @@ class ArticlesApiTest extends BaseApiTest {
         assertEquals(15, articleRepository.count());
     }
 
+    @Test
+    void givenUnauthenticatedReq_shouldReturnWith403() throws Exception {
+        String createArticleReq = TestUtils.loadFile("json/create_article_valid.json");
+        mockMvc.perform(MockMvcRequestBuilders.post("/articles")
+                        .contentType("application/json")
+                        .content(createArticleReq))
+                .andExpect(MockMvcResultMatchers.status().isForbidden())
+                .andDo(MockMvcResultHandlers.print());
+
+        assertEquals(0, articleRepository.count());
+    }
+
 }

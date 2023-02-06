@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.yirelav.bellintegrationtask.domain.Article;
 import ru.yirelav.bellintegrationtask.repository.ArticleRepository;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,20 @@ public class EntityCreator {
         List<Article> articles = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
             articles.add(createArticleEntity());
+        }
+        return articleRepository.saveAll(articles);
+    }
+
+    public List<Article> createNArticlesWithDateOfPublished(int n, Instant date) {
+        List<Article> articles = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            Article article = Article.builder()
+                    .title(ARTICLE_TITLE)
+                    .author(ARTICLE_AUTHOR)
+                    .content(ARTICLE_CONTENT)
+                    .dateOfPublished(date)
+                    .build();
+            articles.add(article);
         }
         return articleRepository.saveAll(articles);
     }
