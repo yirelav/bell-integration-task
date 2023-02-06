@@ -1,0 +1,22 @@
+services:
+  articles-api:
+    build: ./
+    restart: "no"
+    ports:
+      - "8080:8080"
+    environment:
+      - spring_datasource_url=${POSTGRES_URL}
+      - spring_datasource_username=${POSTGRES_USERNAME}
+      - spring_datasource_password=${POSTGRES_PASSWORD}
+      - report_path=${REPORT_PATH}
+    depends_on:
+      - postgres
+    links:
+      - postgres
+  postgres:
+    image: postgres:11.6-alpine
+    restart: "always"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
