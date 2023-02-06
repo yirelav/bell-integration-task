@@ -9,8 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
@@ -18,8 +18,8 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Article {
-    private static final int MAX_CONTENT_SIZE = 10_000_000;
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -27,23 +27,19 @@ public class Article {
     @JsonProperty("id")
     private Long id;
 
-    @Size(max = 100)
-    @Column(name = "title", nullable = false, length = 100)
+    @Column(name = "title", nullable = false)
     @NotBlank
     String title;
 
-    @Size(max = 64)
-    @Column(name = "author", nullable = false, length = 64)
+    @Column(name = "author", nullable = false)
     @NotNull
     String author;
 
     @Lob
     @Column(name = "content", nullable = false)
-    @Size(max = MAX_CONTENT_SIZE)
     String content;
 
-    @Column(name = "dateOfPublished")
-    @NotNull
+    @Column(name = "dateOfPublished", nullable = false)
     Instant dateOfPublished;
 
     public Instant getDateOfPublished() {
