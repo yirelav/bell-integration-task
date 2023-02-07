@@ -1,1 +1,1 @@
-rootProject.name = "bell-integration-task"
+rootProject.name = "bell-integrator-task"
