@@ -1,3 +1,9 @@
+# How to build and run (with Docker)
+```
+.\gradlew bootJar
+docker compose --env-file ./.env.dev up
+```
+
 # Task description
 
 You are a member of a new startup that is developing a cutting edge software that will take out any competition in no time.
