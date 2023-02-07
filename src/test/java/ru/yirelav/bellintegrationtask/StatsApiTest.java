@@ -3,6 +3,7 @@ package ru.yirelav.bellintegrationtask;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -20,7 +21,7 @@ class StatsApiTest extends BaseApiTest {
         articleRepository.deleteAll();
     }
 
-//    @WithMockUser(value = "test_admin")
+    @WithMockUser(value = "test_admin", roles = "ADMIN")
     @Test
     void givenDailyStatsReq_shouldReturnLast7DaysStats() throws Exception {
         entityCreator.createNArticlesWithDateOfPublished(1, Instant.now().plus(1, ChronoUnit.DAYS));
@@ -44,7 +45,7 @@ class StatsApiTest extends BaseApiTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
-//    @WithMockUser(value = "test_user")
+    @WithMockUser(value = "test_user")
     @Test
     void givenDailyStatsReqFromUser_shouldReturnForbiddenWith403() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/articles/stats")

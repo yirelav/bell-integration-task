@@ -9,7 +9,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ru.yirelav.bellintegrationtask.config.TestConstants.*;
+import static ru.yirelav.bellintegrationtask.config.TestConstants.ARTICLE_AUTHOR;
+import static ru.yirelav.bellintegrationtask.config.TestConstants.ARTICLE_CONTENT;
+import static ru.yirelav.bellintegrationtask.config.TestConstants.ARTICLE_DATE_OF_PUBLISHED;
+import static ru.yirelav.bellintegrationtask.config.TestConstants.ARTICLE_TITLE;
 
 @Component
 public class EntityCreator {
@@ -17,21 +20,15 @@ public class EntityCreator {
     @Autowired
     ArticleRepository articleRepository;
 
-    public Article createArticle() {
-        return articleRepository.save(
-                createArticleEntity()
-        );
-    }
-
-    public List<Article> createNArticles(int n) {
+    public void createNArticles(int n) {
         List<Article> articles = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
             articles.add(createArticleEntity());
         }
-        return articleRepository.saveAll(articles);
+        articleRepository.saveAll(articles);
     }
 
-    public List<Article> createNArticlesWithDateOfPublished(int n, Instant date) {
+    public void createNArticlesWithDateOfPublished(int n, Instant date) {
         List<Article> articles = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
             Article article = Article.builder()
@@ -42,7 +39,7 @@ public class EntityCreator {
                     .build();
             articles.add(article);
         }
-        return articleRepository.saveAll(articles);
+        articleRepository.saveAll(articles);
     }
 
 

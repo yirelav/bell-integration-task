@@ -8,7 +8,6 @@ import ru.yirelav.bellintegrationtask.dto.IArticlePeriodicalStatisticRecord;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Map;
 
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Long> {
