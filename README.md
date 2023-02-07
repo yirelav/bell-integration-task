@@ -4,6 +4,11 @@
 docker compose --env-file ./.env.dev up
 ```
 
+# How to test (Docker is required)
+```
+.\gradlew test
+```
+
 # Task description
 
 You are a member of a new startup that is developing a cutting edge software that will take out any competition in no time.
